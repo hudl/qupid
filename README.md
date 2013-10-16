@@ -6,6 +6,8 @@ classes that are marked up with [BsonElement] and [BsonId] attributes to map bet
 name in the MongoDB collection). We typically use one or two character names within our collections to save space. Qupid makes it easier to query
 because we can reference the "long name" in our queries.
 
+Written by [Brian Kaiser](https://github.com/Briankaiser) and [Jon Dokulil](https://github.com/agilejon)
+
 Qupid is really two pieces:
 
 1. [```Qupid.Compile.Compiler```](https://github.com/hudl/qupid/blob/master/Qupid/Compile/Compiler.cs) - takes a Qupid query and converts it to a MongoDB aggregation statement
