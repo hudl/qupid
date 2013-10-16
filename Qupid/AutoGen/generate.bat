@@ -1,0 +1,1 @@
+"..\..\Antlr 3.5\Antlr3.exe" QuerySyntax.g
