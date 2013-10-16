@@ -11,14 +11,30 @@ namespace Qupid.Tests
         {
             const string query = @"select Foo.Name, Foo.COUNT
                                   from Foo
-                                  where Foo.FooId <> 2
+                                  where Foo.FooId <> '521d67620e281a036092ea7e'
                                   group by Foo.Name";
             var compiler = new Compiler(new TestCollectionFinder());
             var compiledQuery = compiler.Compile(query);
             var cleanedStatement = Regex.Replace(compiledQuery.GetMongoQuery(), "\\s+", " ").Trim();
 
             Assert.False(compiledQuery.HasErrors());
-            Assert.Equal("{ aggregate:'foo', pipeline: [ {$match: {'_id':{$ne:2}}}, { $group: { _id:'$n', Foo_count: {$sum:1}} }, ] }", cleanedStatement);
+            Assert.Equal("{ aggregate:'foo', pipeline: [ {$match: {'_id':{$ne:ObjectId('521d67620e281a036092ea7e')}}}, { $group: { _id:'$n', Foo_count: {$sum:1}} }, ] }", cleanedStatement);
+        }
+
+        [Fact]
+        public void Select_WhereBsonObjectIdEquals_Success()
+        {
+            var compiler = new Compiler(new TestCollectionFinder());
+
+            const string query = @"select Foo.Name, Foo.COUNT
+                                  from Foo
+                                  where Foo.FooId = '521d67620e281a036092ea7e'
+                                  group by Foo.Name";
+            var compiledQuery = compiler.Compile(query);
+            var cleanedStatement = Regex.Replace(compiledQuery.GetMongoQuery(), "\\s+", " ").Trim();
+
+            Assert.False(compiledQuery.HasErrors());
+            Assert.Equal("{ aggregate:'foo', pipeline: [ {$match: {'_id':ObjectId('521d67620e281a036092ea7e')}}, { $group: { _id:'$n', Foo_count: {$sum:1}} }, ] }", cleanedStatement);
         }
 
         [Fact]

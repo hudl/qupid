@@ -241,6 +241,10 @@ namespace Qupid.Compile
                     {
                         where.AnalyzedValue = (where.LiteralValue.ToString().Equals("1")) ? "true" : "false";
                     }
+                    else if (dbProp.Type == "BsonObjectId")
+                    {
+                        where.AnalyzedValue = "ObjectId(" + where.LiteralValue + ")";
+                    }
                     else
                     {
                         where.AnalyzedValue = where.LiteralValue.ToString();
